@@ -10,6 +10,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 jobs:
   release:
@@ -48,10 +49,12 @@ jobs:
           # リモートにタグが既に存在するかチェック
           if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
             echo "Tag $TAG_NAME already exists on remote, skipping tag creation"
+            echo "created=false" >> "$GITHUB_OUTPUT"
           else
             echo "Creating tag $TAG_NAME..."
             git tag "$TAG_NAME"
             git push origin "$TAG_NAME"
+            echo "created=true" >> "$GITHUB_OUTPUT"
           fi
 
           # GitHub Release が既に存在する場合はスキップ
@@ -70,3 +73,29 @@ jobs:
             gh release create "$TAG_NAME" --title "$TAG_NAME" --generate-notes
           fi
           rm -f .release-notes.md
+
+      # NuGet に dotnet tool として公開
+      - name: Setup .NET
+        if: steps.release.outputs.created == 'true'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Pack dotnet tool
+        if: steps.release.outputs.created == 'true'
+        run: dotnet pack "Tools~/NetworkIDChecker/NetworkIDChecker.csproj" -c Release -o ./artifacts
+
+      - name: NuGet login (OIDC)
+        if: steps.release.outputs.created == 'true'
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ github.repository_owner }}
+
+      - name: Publish to NuGet
+        if: steps.release.outputs.created == 'true'
+        run: >-
+          dotnet nuget push ./artifacts/*.nupkg
+          --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate

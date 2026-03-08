@@ -5,3 +5,24 @@ document:
 ci:
   - changed-files:
       - any-glob-to-any-file: ".github/workflows/**/*"
+
+editor:
+  - changed-files:
+      - any-glob-to-any-file: "Editor/**/*"
+
+cli:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Tools~/NetworkIDChecker/**/*"
+          - "Tools~/NetworkIDChecker.sln"
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: "Tools~/NetworkIDChecker.Tests/**/*"
+
+release:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".changeset/**/*"
+          - "CHANGELOG.md"
+          - "package.json"
