@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    name: Build and Test
+  build-and-test:
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,10 +20,60 @@ jobs:
           dotnet-version: "6.0.x"
 
       - name: Restore dependencies
-        run: dotnet restore Tools/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj
+        run: dotnet restore "Tools~/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj"
 
       - name: Build
-        run: dotnet build Tools/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj -c Release --no-restore
+        run: dotnet build "Tools~/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj" -c Release --no-restore
 
-      - name: Test
-        run: dotnet test Tools/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj -c Release --no-build --verbosity normal
+      - name: Test with coverage
+        run: >-
+          dotnet test "Tools~/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj"
+          -c Release --no-build --verbosity normal
+          /p:CollectCoverage=true
+          /p:CoverletOutputFormat=cobertura
+          /p:CoverletOutput=../../coverage/
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/coverage.cobertura.xml
+
+  format-check:
+    name: Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Check formatting
+        run: dotnet format "Tools~/NetworkIDChecker.sln" --verify-no-changes --verbosity diagnostic
+
+  pack-check:
+    name: Pack Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Pack as dotnet tool
+        run: dotnet pack "Tools~/NetworkIDChecker/NetworkIDChecker.csproj" -c Release -o ./artifacts
+
+      - name: Verify package contents
+        run: |
+          NUPKG=$(ls ./artifacts/*.nupkg)
+          echo "Package: $NUPKG"
+          echo "Size: $(du -h "$NUPKG" | cut -f1)"
+          # nupkg は zip 形式なので中身を確認できる
+          unzip -l "$NUPKG"

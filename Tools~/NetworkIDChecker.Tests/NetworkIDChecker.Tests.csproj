@@ -14,13 +14,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <!-- カバレッジ収集用（coverlet.msbuild）。
+         CLI プロジェクトの DLL を計測対象にするため ProjectReference と併用。 -->
+    <PackageReference Include="coverlet.msbuild" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="../../Editor/Models.cs" Link="Models.cs" />
-    <Compile Include="../../Editor/PinnedFile.cs" Link="PinnedFile.cs" />
-    <Compile Include="../../Editor/SceneParser.cs" Link="SceneParser.cs" />
-    <Compile Include="../../Editor/Validator.cs" Link="Validator.cs" />
-    <Compile Include="../../Editor/FileOperations.cs" Link="FileOperations.cs" />
-    <Compile Include="../../Editor/PersistenceDetector.cs" Link="PersistenceDetector.cs" />
+    <!-- CLI プロジェクトを参照。Editor/*.cs はそちらでコンパイルされる -->
+    <ProjectReference Include="../NetworkIDChecker/NetworkIDChecker.csproj" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,9 @@ Thumbs.db
 [Bb]uild/
 [Ll]ogs/
 
+# NuGet pack output
+artifacts/
+
 # Node
 node_modules/
 
