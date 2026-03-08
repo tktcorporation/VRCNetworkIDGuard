@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore Tools/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj
+
+      - name: Build
+        run: dotnet build Tools/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj -c Release --no-restore
+
+      - name: Test
+        run: dotnet test Tools/NetworkIDChecker.Tests/NetworkIDChecker.Tests.csproj -c Release --no-build --verbosity normal

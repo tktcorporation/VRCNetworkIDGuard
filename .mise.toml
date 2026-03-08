@@ -13,6 +13,8 @@ jj = "latest"
 
 # Browser automation
 "npm:playwright" = "latest"
+# VRChat Unity (2022.3 LTS) に合わせて .NET 6.0 を使用
+dotnet-core = "6"
 
 
 [settings]
