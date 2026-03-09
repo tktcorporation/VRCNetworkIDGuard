@@ -1,13 +1,18 @@
 {
   "name": "com.tktcorporation.vrc-network-id-guard",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "displayName": "VRC NetworkID Guard",
   "description": "VRChat NetworkID の変更を検知・防止し、プレイヤーのパーシステンス（セーブデータ）消失を防ぐツール",
   "unity": "2022.3",
   "documentationUrl": "https://github.com/tktcorporation/VRCNetworkIDGuard",
   "changelogUrl": "https://github.com/tktcorporation/VRCNetworkIDGuard/blob/main/CHANGELOG.md",
   "license": "MIT",
-  "keywords": ["vrchat", "networkid", "persistence", "save-data"],
+  "keywords": [
+    "vrchat",
+    "networkid",
+    "persistence",
+    "save-data"
+  ],
   "author": {
     "name": "tktcorporation",
     "url": "https://github.com/tktcorporation"
