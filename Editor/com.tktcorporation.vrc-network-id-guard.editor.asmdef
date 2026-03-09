@@ -1,0 +1,17 @@
+{
+  "name": "com.tktcorporation.vrc-network-id-guard.editor",
+  "rootNamespace": "VRCNetworkIDGuard",
+  "references": [
+    "VRC.Udon",
+    "VRC.SDKBase.Editor.BuildPipeline"
+  ],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

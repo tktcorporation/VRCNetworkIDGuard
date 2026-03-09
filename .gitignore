@@ -1,0 +1,28 @@
+# .NET build outputs
+[Bb]in/
+[Oo]bj/
+*.dll
+*.pdb
+*.cache
+
+# IDE
+.vs/
+*.user
+*.suo
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Ll]ogs/
+
+# Node
+node_modules/
+
+# mise
+.mise.local.toml

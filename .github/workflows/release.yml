@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: npm run version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create tag and GitHub Release
+        if: steps.changesets.outputs.hasChangesets == 'false' && steps.changesets.outputs.pullRequestNumber == ''
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG_NAME="v$VERSION"
+
+          # リモートにタグが既に存在するかチェック
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "Tag $TAG_NAME already exists on remote, skipping tag creation"
+          else
+            echo "Creating tag $TAG_NAME..."
+            git tag "$TAG_NAME"
+            git push origin "$TAG_NAME"
+          fi
+
+          # GitHub Release が既に存在する場合はスキップ
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Release $TAG_NAME already exists, skipping release creation"
+            exit 0
+          fi
+
+          # CHANGELOG.md から該当バージョンのリリースノートを抽出
+          node scripts/extract-release-notes.js "$VERSION" > .release-notes.md
+
+          # GitHub Release 作成
+          if [ -s .release-notes.md ]; then
+            gh release create "$TAG_NAME" --title "$TAG_NAME" --notes-file .release-notes.md
+          else
+            gh release create "$TAG_NAME" --title "$TAG_NAME" --generate-notes
+          fi
+          rm -f .release-notes.md

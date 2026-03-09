@@ -1,0 +1,39 @@
+name: Changeset Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.pull_request.labels.*.name, 'skip-changeset')"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check for changeset
+        run: |
+          if [ ! -d ".changeset" ]; then
+            echo "::error::.changeset directory not found"
+            exit 1
+          fi
+
+          CHANGESET_FILES=$(ls -1 .changeset/*.md 2>/dev/null | grep -v "README.md" | wc -l)
+
+          if [ "$CHANGESET_FILES" -eq 0 ]; then
+            echo "::error::No changeset found. Please run 'npm run changeset' to create one, or add 'skip-changeset' label if this PR doesn't need a changeset."
+            exit 1
+          fi
+
+          echo "✓ Changeset found"
