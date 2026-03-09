@@ -61,9 +61,9 @@ namespace VRCNetworkIDGuard
     ) : PinnedEntryBase(ID, Path);
 
     /// <summary>
-    /// 先方（パートナー）のみに存在する予約エントリ。
+    /// 外部環境のみに存在する予約エントリ。
     ///
-    /// ローカルのシーンには対応する GameObject がないが、先方のアップロード済みワールドには
+    /// ローカルのシーンには対応する GameObject がないが、外部環境のアップロード済みワールドには
     /// この ID が使われている。ローカルで同じ ID が新規発生した場合の衝突検知に使用する。
     /// GameObjectFileID フィールド自体を持たないことで、誤ったアクセスを型レベルで防ぐ。
     /// </summary>
@@ -89,7 +89,7 @@ namespace VRCNetworkIDGuard
         /// <summary>同じ ID の fileID が変わった（別オブジェクトへのデータ誤紐付けリスク）</summary>
         GameObjectChanged,
 
-        /// <summary>新規 ID が先方の予約 ID と衝突した（アップロード時の ID 競合リスク）</summary>
+        /// <summary>新規 ID が外部環境の予約 ID と衝突した（アップロード時の ID 競合リスク）</summary>
         ReservedConflict,
     }
 

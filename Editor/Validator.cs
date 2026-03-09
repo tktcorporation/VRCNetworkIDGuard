@@ -69,7 +69,7 @@ namespace VRCNetworkIDGuard
             if (conflicts.Count > 0)
             {
                 sb.AppendLine($"[NG] 予約済みIDとの衝突: {string.Join(", ", conflicts.Select(c => c.ID).OrderBy(x => x))}");
-                sb.AppendLine("     → 先方環境で使用中のIDがローカルで新規割り当てされています");
+                sb.AppendLine("     → 外部環境で使用中のIDがローカルで新規割り当てされています");
                 AppendGroupedPersistenceImpact(sb, conflicts);
             }
 
