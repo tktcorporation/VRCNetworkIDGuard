@@ -17,12 +17,12 @@ using VRC.SDKBase.Editor.BuildPipeline;
 //
 // 背景:
 //   VRChatワールドのNetworkIDが変わるとプレイヤーのパーシステンス（セーブデータ）が
-//   消失する。このワールドは別会社がアップロードを担当するため、先方環境で確定した
+//   消失する。複数環境で同一ワールドを管理する場合、外部環境で確定した
 //   NetworkIDの割り当てをローカルでも維持する必要がある。
 //
 // 統合Pinnedファイル (networkids_pinned.json) で一元管理する:
 //   - gameObject付きエントリ: ローカルで解決済み。シーン復元と変更検知に使用。
-//   - gameObjectなしエントリ: 先方のみに存在する予約ID。衝突検知に使用。
+//   - gameObjectなしエントリ: 外部環境のみに存在する予約ID。衝突検知に使用。
 //
 // このファイルが担う2つの役割:
 //
@@ -155,7 +155,7 @@ internal static class NetworkIDBuildValidator
         var choice = EditorUtility.DisplayDialogComplex(
             "予約IDとの衝突を検出しました",
             $"{result.GetDetailedMessage()}\n\n" +
-            "このままアップロードすると先方のセーブデータに影響する可能性があります。\n\n" +
+            "このままアップロードすると外部環境のセーブデータに影響する可能性があります。\n\n" +
             "「再割り当て」: 衝突IDに新しいIDを自動採番してビルド続行\n" +
             "「リストア」: Pinnedの状態に復元してビルド続行（衝突エントリは除去）",
             "再割り当てしてビルド続行",
@@ -377,13 +377,13 @@ public class NetworkIDValidatorWindow : EditorWindow
                     RestoreFromPinned();
             }
 
-            if (GUILayout.Button("Import (先方JSON)", GUILayout.Height(28)))
+            if (GUILayout.Button("Import (外部JSON)", GUILayout.Height(28)))
                 ImportFromPartnerJson();
         }
 
         EditorGUILayout.Space(6);
         EditorGUILayout.HelpBox(
-            "Import: 先方の network_ids JSON ({\"ID\": \"/path\"} 形式) をロードし、\n" +
+            "Import: 外部環境の network_ids JSON ({\"ID\": \"/path\"} 形式) をロードし、\n" +
             "シーン内オブジェクトをパスで検索して fileID を解決します。\n" +
             "CLI の import-pinned より正確（stripped prefab も解決可能）。",
             MessageType.None
@@ -405,12 +405,12 @@ public class NetworkIDValidatorWindow : EditorWindow
     // ─── Import (パスベース / Unity API) ──────────────────────────────────
 
     /// <summary>
-    /// 先方の network_ids.json ({ID: path}) をロードし、Unity API でパスから fileID を
+    /// 外部環境の network_ids.json ({ID: path}) をロードし、Unity API でパスから fileID を
     /// 解決して Pinned ファイルとシーンの NetworkIDs セクションを更新する。
     /// </summary>
     private void ImportFromPartnerJson()
     {
-        var filePath = EditorUtility.OpenFilePanel("先方の network_ids JSON を選択", "", "json");
+        var filePath = EditorUtility.OpenFilePanel("外部環境の network_ids JSON を選択", "", "json");
         if (string.IsNullOrEmpty(filePath)) return;
 
         var partnerMapping = FileOperations.LoadPartnerJson(filePath);
@@ -465,7 +465,7 @@ public class NetworkIDValidatorWindow : EditorWindow
 
         if (!EditorUtility.DisplayDialog(
             "Import 確認",
-            $"先方 JSON: {partnerMapping.Count}件\n" +
+            $"外部 JSON: {partnerMapping.Count}件\n" +
             $"  ローカル解決: {localCount}件\n" +
             $"  予約（ローカルに存在しない）: {reservedCount}件\n\n" +
             "Pinned ファイルとシーンの NetworkIDs を更新しますか？",
@@ -584,7 +584,7 @@ public class NetworkIDValidatorWindow : EditorWindow
                 localEntryCount = 0;
                 reservedEntryCount = 0;
                 lastResult = null;
-                lastError = "Pinnedファイルが存在しません。「Import」ボタンで先方JSONを取り込んでください。";
+                lastError = "Pinnedファイルが存在しません。「Import」ボタンで外部JSONを取り込んでください。";
                 Repaint();
                 return;
             }

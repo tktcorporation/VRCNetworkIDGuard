@@ -7,7 +7,7 @@
 //
 // 対応するフォーマット:
 //   networkids_pinned.json — LocalEntry（gameObject付き）と ReservedEntry（パスのみ）の混在配列
-//   先方 partner JSON — {"10": "/Cooker", ...} 形式の ID→パスマッピング
+//   外部環境 JSON — {"10": "/Cooker", ...} 形式の ID→パスマッピング
 //
 // 技術的制約: System.Text.Json は Unity で使用できないため、正規表現による手動パースを行う。
 
@@ -21,7 +21,7 @@ using System.Text.RegularExpressions;
 namespace VRCNetworkIDGuard
 {
     /// <summary>
-    /// networkids_pinned.json および先方 partner JSON のパース・シリアライズ。
+    /// networkids_pinned.json および外部環境 JSON のパース・シリアライズ。
     /// ファイル I/O を含まない純粋関数のみで構成し、テスタビリティを確保する。
     /// </summary>
     public static class PinnedFile
@@ -56,7 +56,7 @@ namespace VRCNetworkIDGuard
         ///
         /// gameObject フィールドの有無で LocalEntry / ReservedEntry を判定する:
         ///   gameObject あり → LocalEntry（ローカル解決済み、シーン復元に使用可能）
-        ///   gameObject なし → ReservedEntry（先方のみに存在する予約 ID）
+        ///   gameObject なし → ReservedEntry（外部環境のみに存在する予約 ID）
         /// </summary>
         public static List<PinnedEntryBase> Parse(string json)
         {
@@ -137,7 +137,7 @@ namespace VRCNetworkIDGuard
         }
 
         /// <summary>
-        /// 先方の partner JSON（{"10": "/Cooker", "11": "/Scanner"}）をパースして
+        /// 外部環境の JSON（{"10": "/Cooker", "11": "/Scanner"}）をパースして
         /// ID → パスの辞書を返す。
         /// </summary>
         public static Dictionary<int, string> ParsePartnerJson(string json)

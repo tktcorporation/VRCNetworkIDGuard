@@ -7,7 +7,7 @@
 // 責務:
 //   - シーンファイルの読み込みと CRLF→LF 正規化
 //   - Pinned ファイルの読み書き（BOM 対応込み）
-//   - 先方 JSON の読み込み
+//   - 外部環境 JSON の読み込み
 //   - シーン復元（バックアップ付き書き込み）
 
 using System;
@@ -77,7 +77,7 @@ namespace VRCNetworkIDGuard
         }
 
         /// <summary>
-        /// 先方の partner JSON を読み込んでパース。ファイルが存在しない場合は null を返す。
+        /// 外部環境の JSON を読み込んでパース。ファイルが存在しない場合は null を返す。
         /// BOM 付き UTF-8 にも対応する。
         /// </summary>
         public static Dictionary<int, string>? LoadPartnerJson(string path)

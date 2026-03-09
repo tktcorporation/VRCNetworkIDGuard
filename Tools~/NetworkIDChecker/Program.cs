@@ -20,7 +20,7 @@
 //   dotnet run -- restore                     # PinnedからNetworkIDsを復元
 //   dotnet run -- reassign                    # 予約ID衝突を再割り当てで解消
 //   dotnet run -- show                        # 現在のNetworkIDsを表示
-//   dotnet run -- import-pinned <json-path>   # 先方JSONをインポート
+//   dotnet run -- import-pinned <json-path>   # 外部環境JSONをインポート
 //   dotnet run -- show-pinned                 # Pinnedの状態を表示
 //
 // オプション:
@@ -277,7 +277,7 @@ class Program
         {
             Console.WriteLine($"NOTE: 以下の新規IDはパス情報がありません（path=\"(unknown)\"）:");
             Console.WriteLine($"      {string.Join(", ", updateResult.NewIDsWithoutPath)}");
-            Console.WriteLine("      パスを設定するには先方JSONを受領後 import-pinned コマンドを使用してください。");
+            Console.WriteLine("      パスを設定するには外部環境のJSONを取得後 import-pinned コマンドを使用してください。");
             Console.WriteLine();
         }
 
@@ -378,7 +378,7 @@ class Program
     }
 
     /// <summary>
-    /// 先方のJSONをインポートしてPinnedファイルを生成
+    /// 外部環境のJSONをインポートしてPinnedファイルを生成
     /// </summary>
     private static int RunImportPinned(string[] args, string projectRoot, string scenePath, string pinnedPath)
     {
@@ -409,7 +409,7 @@ class Program
         }
 
         Console.WriteLine($"インポート元: {sourcePath}");
-        Console.WriteLine($"先方エントリ数: {partnerMapping.Count}");
+        Console.WriteLine($"外部エントリ数: {partnerMapping.Count}");
 
         List<NetworkIDEntry> sceneEntries;
         if (File.Exists(scenePath))
@@ -430,7 +430,7 @@ class Program
 
         Console.WriteLine();
         Console.WriteLine($"ローカル解決済み: {localCount}件");
-        Console.WriteLine($"予約（先方のみ）: {reservedCount}件");
+        Console.WriteLine($"予約（外部環境のみ）: {reservedCount}件");
 
         var existing = FileOperations.LoadPinned(pinnedPath);
         if (existing != null)
@@ -527,7 +527,7 @@ class Program
   restore              PinnedファイルからシーンのNetworkIDsを復元
   reassign             予約IDと衝突したエントリに新IDを採番して解消
   show                 シーンの現在のNetworkIDsを表示
-  import-pinned <path> 先方のID→パスJSONをインポートしてPinnedファイルを生成
+  import-pinned <path> 外部環境のID→パスJSONをインポートしてPinnedファイルを生成
   show-pinned          Pinnedファイルの内容を表示
   --help               このヘルプを表示
 
@@ -542,7 +542,7 @@ class Program
 
 統合Pinnedファイル (networkids_pinned.json):
   gameObject付き → ローカルで解決済み。シーン復元と変更検知に使用。
-  gameObjectなし → 先方のみの予約ID。衝突検知に使用。
+  gameObjectなし → 外部環境のみの予約ID。衝突検知に使用。
 
 安全性ポリシー:
   update は新規追加のみ自動許可。既存ペアの変更・削除は --force が必須。

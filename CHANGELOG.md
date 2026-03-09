@@ -10,7 +10,7 @@
 
 ### Minor Changes
 
-- [#1](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/1) [`910419a`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/910419ae4f8760ba76ad75baa709ecd379e54800) Thanks [@tktcorporation](https://github.com/tktcorporation)! - NetworkID 固定機能を MetaMogu から独立した VPM パッケージとして初期構築
+- [#1](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/1) [`910419a`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/910419ae4f8760ba76ad75baa709ecd379e54800) Thanks [@tktcorporation](https://github.com/tktcorporation)! - NetworkID 固定機能を VPM パッケージとして初期構築
 
 - [#3](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/3) [`55cd363`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/55cd3632c35b941651cc031978fbc501181fb20e) Thanks [@tktcorporation](https://github.com/tktcorporation)! - Tools/ を Tools~/ にリネームして VPM パッケージに CLI を同梱、dotnet tool としても配布可能に
 
@@ -24,6 +24,6 @@
 - 予約 ID 衝突検知と自動再割り当て
 - Pinned からのシーン復元
 - セーブデータ影響検知 (UdonSynced フィールド)
-- 先方 JSON インポート機能
+- 外部環境の JSON インポート機能
 - CLI ツール (check / update / restore / reassign / import-pinned / show / show-pinned)
 - Project Settings UI でパス設定
