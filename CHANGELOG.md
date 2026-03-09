@@ -1,8 +1,17 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- [#1](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/1) [`910419a`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/910419ae4f8760ba76ad75baa709ecd379e54800) Thanks [@tktcorporation](https://github.com/tktcorporation)! - NetworkID 固定機能を MetaMogu から独立した VPM パッケージとして初期構築
+
+- [#3](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/3) [`55cd363`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/55cd3632c35b941651cc031978fbc501181fb20e) Thanks [@tktcorporation](https://github.com/tktcorporation)! - Tools/ を Tools~/ にリネームして VPM パッケージに CLI を同梱、dotnet tool としても配布可能に
+
 ## [0.1.0] - 2026-03-08
 
 ### Added
+
 - NetworkID 固定 (pinning) 機能
 - シーンファイルの NetworkID 変更検知
 - ビルド前の自動検証 (VRChat SDK / Unity 標準ビルド / Play モード)
