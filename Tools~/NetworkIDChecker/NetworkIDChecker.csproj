@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- VRChat の Unity (2022.3 LTS) が .NET 6.0 を使用しているため合わせている -->
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>10.0</LangVersion>
+
+    <!-- dotnet tool として配布するための設定 -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>networkid-guard</ToolCommandName>
+    <PackageId>tktco.VRCNetworkIDGuard</PackageId>
+    <Version>0.1.0</Version>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+    <!-- NuGet パッケージメタデータ -->
+    <Authors>tktcorporation</Authors>
+    <Description>VRChat NetworkID の変更を検知・防止し、プレイヤーのパーシステンス（セーブデータ）消失を防ぐCLIツール</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/tktcorporation/VRCNetworkIDGuard</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tktcorporation/VRCNetworkIDGuard</RepositoryUrl>
+    <PackageTags>vrchat;networkid;persistence;save-data;udon;vrc</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Editor のソースを直接参照（リンク） -->
+    <Compile Include="../../Editor/Models.cs" Link="Models.cs" />
+    <Compile Include="../../Editor/PinnedFile.cs" Link="PinnedFile.cs" />
+    <Compile Include="../../Editor/SceneParser.cs" Link="SceneParser.cs" />
+    <Compile Include="../../Editor/Validator.cs" Link="Validator.cs" />
+    <Compile Include="../../Editor/FileOperations.cs" Link="FileOperations.cs" />
+    <Compile Include="../../Editor/PersistenceDetector.cs" Link="PersistenceDetector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- NuGet パッケージに README を含める -->
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>
