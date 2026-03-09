@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- [#6](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/6) [`713d584`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/713d5849798139873a14eed12e16c36df135cbba) Thanks [@tktcorporation](https://github.com/tktcorporation)! - ドキュメント・UI メッセージから特定プロジェクト由来の表現（先方、MetaMogu 等）を除去し、汎用的な表現に統一
+
 ## 0.3.0
 
 ### Minor Changes
