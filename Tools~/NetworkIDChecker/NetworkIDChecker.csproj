@@ -11,7 +11,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>networkid-guard</ToolCommandName>
     <PackageId>tktco.VRCNetworkIDGuard</PackageId>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 
     <!-- NuGet パッケージメタデータ -->
