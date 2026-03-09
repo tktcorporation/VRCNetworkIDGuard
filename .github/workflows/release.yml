@@ -85,12 +85,17 @@ jobs:
         if: steps.release.outputs.created == 'true'
         run: dotnet pack "Tools~/NetworkIDChecker/NetworkIDChecker.csproj" -c Release -o ./artifacts
 
-      - name: Authenticate to NuGet (OIDC)
+      - name: NuGet login (OIDC)
         if: steps.release.outputs.created == 'true'
+        id: nuget-login
         uses: NuGet/login@v1
         with:
-          nuget-server: https://api.nuget.org
+          user: ${{ github.repository_owner }}
 
       - name: Publish to NuGet
         if: steps.release.outputs.created == 'true'
-        run: dotnet nuget push ./artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: >-
+          dotnet nuget push ./artifacts/*.nupkg
+          --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
