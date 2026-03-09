@@ -1,6 +1,6 @@
 {
   "name": "com.tktcorporation.vrc-network-id-guard",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "displayName": "VRC NetworkID Guard",
   "description": "VRChat NetworkID の変更を検知・防止し、プレイヤーのパーシステンス（セーブデータ）消失を防ぐツール",
   "unity": "2022.3",

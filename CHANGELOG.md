@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- [#4](https://github.com/tktcorporation/VRCNetworkIDGuard/pull/4) [`a1f32b7`](https://github.com/tktcorporation/VRCNetworkIDGuard/commit/a1f32b7fb6a49f4bebdb38134e0484e545a7e771) Thanks [@tktcorporation](https://github.com/tktcorporation)! - Tools/ を Tools~/ にリネームして VPM パッケージに CLI を同梱、dotnet tool としても配布可能に
+
 ## 0.2.0
 
 ### Minor Changes
